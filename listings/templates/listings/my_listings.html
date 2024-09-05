@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<header>
+    <nav>
+        <ul>
+            {% for item in menu_items %}
+
+            {% endfor %}
+        </ul>
+    </nav>
+</header>
+<h1>My Listings</h1>
+    <table>
+        <tr>
+            <th>price</th>
+            <th>owner</th>
+            <th>title</th>
+            <th>description</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+        {% for listing in listings %}
+            <tr>
+                <td>{{ listing.price }}</td>
+                <td>{{ listing.owner }}</td>
+                <td>{{ listing.title }}</td>
+                <td>{{ listing.description }}</td>
+                <td>
+                    <button>
+                        <a href="{% url 'edit_listing' listing.pk %}">
+                            Edit
+                        </a>
+                    </button>
+                </td>
+                <td>
+                    <button>
+                        <a href="{% url 'delete_listing' listing.pk %}">
+                            Delete
+                        </a>
+                    </button>
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="4">No listings yet.</td>
+            </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

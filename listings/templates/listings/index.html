@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+ <button>create</button>
+<ul>
+    {% for listing in listings %}
+    <li>
+
+    {{ listing.title }}
+    <ul>
+        <li>
+             {{ listing.description }}
+        </li>
+        <li><b>location</b>:{{ listing.location }}</li>
+        <li><b>price</b>:{{ listing.price }}</li>
+        <li><b>rooms</b>:{{ listing.owner }}</li>
+        <li><b>owner</b>:{{ listing.rooms }}</li>
+        <li><b>property type</b>:{{ listing.property_type }}</li>
+        <li> <b>created at</b>:{{ listing.created_at }}</li>
+        <li> <b>updated at</b>:{{ listing.updated_at}}</li>
+
+    </ul>
+    </li>
+        <button>Edit</button>
+        <button>delete</button>
+
+    {% endfor %}
+</ul>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>all listings</title>
+</head>
+<body>
+ <h1>All listings</h1>
+<ul>
+    {% for listing in listings %}
+    <li>{{listing.title}}
+
+    </li>
+    {% empty %}
+    <li>Listings not found
+
+    </li>
+    {% endfor %}
+</ul>
+</body>
+</html>
