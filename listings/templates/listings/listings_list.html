@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<h2>Фильтровать объявления</h2>
+<form method="get">
+    {{ filter.form.as_p }}
+    <button type="submit">Применить фильтры</button>
+</form>
+
+<ul>
+{% for listing in filter.qs %}
+    <li>{{ listing.title }} - {{ listing.price }} EUR - {{ listing.rooms }} комнат - {{ listing.property_type }}</li>
+{% endfor %}
+</ul>

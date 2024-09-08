@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<h2>История просмотров</h2>
+<ul>
+    {% for record in history %}
+        <li>{{ record.listing.title }} - просмотрено {{ record.viewed_at }}</li>
+    {% empty %}
+        <li>История просмотров пуста.</li>
+    {% endfor %}
+</ul>

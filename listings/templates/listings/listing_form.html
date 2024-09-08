@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>{% if form.instance.pk %}Edit Listing{% else %}Create Listing{% endif %}</title>
 </head>
 <body>
 <h2>{% if form.instance.pk %}Edit Listing{% else %}Create Listing{% endif %}</h2>
@@ -10,7 +10,12 @@
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
- <p><strong>Владелец:</strong> {{ user.username }}</p>
+    <p><strong>Владелец:</strong> {{ user.username }}</p>
+
+    <!-- Добавляем возможность управления статусом объявления -->
+    <label for="status">Активно:</label>
+    <input type="checkbox" name="status" id="status" {% if form.instance.status %}checked{% endif %}>
+
     <button type="submit">
         {% if form.instance.pk %}
             Update

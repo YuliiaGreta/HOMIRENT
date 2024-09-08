@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -40,8 +42,13 @@ INSTALLED_APPS = [
     'listings',
     'rest_framework',
     'django_filters',
-    'user'
+    'user',
+    'booking',
+    'reviews',
+    'search',
+    'rest_framework_simplejwt',
 ]
+
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -136,3 +143,12 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=120),  # Время жизни токена
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),  # Время жизни обновляющего токена
+    'ROTATE_REFRESH_TOKENS': True,  # Автоматическая ротация токенов при обновлении
+    'BLACKLIST_AFTER_ROTATION': True,  # Заносить старые токены в черный список
+    'AUTH_HEADER_TYPES': ('Bearer',),  # Тип заголовка
+}

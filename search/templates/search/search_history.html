@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<h2>История поиска</h2>
+<ul>
+    {% for record in history %}
+        <li>Запрос: "{{ record.query }}" - {{ record.created_at }}</li>
+    {% empty %}
+        <li>История поиска пуста.</li>
+    {% endfor %}
+</ul>

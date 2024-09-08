@@ -3,13 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <title>all listings</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 </head>
 <body>
  <h1>All listings</h1>
-<ul>
-    {% for listing in listings %}
-    <li>{{listing.title}}
+  <form id="sortForm">
+        <select id="sortBy" name="sort_by">
+            <option value="name">By Name</option>
+            <option value="price">By Price</option>
+        </select>
+        <select id="orderBy" name="order">
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+        </select>
+        <button type="submit">Sort</button>
+    </form>
 
+<ul id="itemList">
+    {% for listing in listings %}
+    <li>{{listing.title}}<br>
+        {{ listing.description}}<br>
+        {{ listing.location}}<br>
+        {{ listing.price}}<br>
+        {{ listing.rooms}}<br>
+        {{ listing.property_type}}<br>
+        {{ listing.status}}<br>
+        {{ listing.owner}}<br>
+        {{ listing.created_at}}<br>
+        {{ listing.updated_at}}<br>
     </li>
     {% empty %}
     <li>Listings not found
@@ -17,5 +39,20 @@
     </li>
     {% endfor %}
 </ul>
+ <script>
+        $('#sortForm').on('submit', function(e) {
+            e.preventDefault();
+            let formData = $(this).serialize();
+            $.ajax({
+                url: "{% url 'user:item-list' %}",
+                method: 'GET',
+                data: formData,
+                success: function(response) {
+                    $('#itemList').html(response);
+                }
+            });
+        });
+    </script>
+
 </body>
 </html>

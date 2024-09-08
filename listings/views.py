@@ -1,22 +1,15 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
 from rest_framework import viewsets, filters
 from rest_framework.exceptions import PermissionDenied
-
-from .models import Listing, Booking  # Импортируем обе модели
-from .serializers import ListingSerializer, BookingSerializer
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from django_filters.rest_framework import DjangoFilterBackend
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth.decorators import login_required
-from .models import Listing
+
+from .models import Listing  # Импортируем обе модели
+from .serializers import ListingSerializer
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from .forms import ListingForm
 from .decorators import user_is_landlord
 
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth.decorators import login_required
-from .models import Listing
-from .forms import ListingForm
-from .decorators import user_is_landlord
 
 @login_required
 @user_is_landlord
@@ -25,14 +18,12 @@ def create_listing(request):
         form = ListingForm(request.POST)
         if form.is_valid():
             listing = form.save(commit=False)
-            listing.owner = request.user
+            listing.owner = request.user  # Устанавливаем владельца
             listing.save()
-            return redirect('create_listing')
+            return redirect('my_listings')
     else:
-        form = ListingForm()
-        return render(request, 'listings/listing_form.html', {'form': form})  # Отображаем форму для создания объявления
+        form = ListingForm()  # Пустая форма для создания нового объекта
     return render(request, 'listings/listing_form.html', {'form': form})
-
 @login_required
 @user_is_landlord
 def edit_listing(request, pk):
@@ -42,11 +33,14 @@ def edit_listing(request, pk):
     if request.method == 'POST':
         form = ListingForm(request.POST, instance=listing)
         if form.is_valid():
-            form.save()
-            return redirect('my_listings')
+            listing = form.save(commit=False)
+            listing.status = 'status' in request.POST  # Обрабатываем статус (активно/неактивно)
+            listing.save()
+            return redirect('my_listings')  # Перенаправляем на страницу с моими объявлениями
     else:
         form = ListingForm(instance=listing)
-    return render(request, 'listings/listing_form.html', {'form': form})
+    return render(request, 'listings/listing_form.html', {'form': form})  # Отображаем форму редактирования
+
 
 @login_required
 @user_is_landlord
@@ -55,31 +49,31 @@ def delete_listing(request, pk):
     if listing.owner != request.user:
         raise PermissionDenied
     listing.delete()
-    return redirect('my_listings')
+    return redirect('my_listings')  # Перенаправление на страницу с моими объявлениями
+
 
 @login_required
 @user_is_landlord
 def listing_detail(request, pk):
     listing = get_object_or_404(Listing, pk=pk)
-    return render(request, 'listings/listing_detail.html', {'listing': listing})
+    return render(request, 'listings/listing_detail.html', {'listing': listing})  # Отображаем подробности объявления
+
+
 @login_required
 @user_is_landlord
 def view_all_listings(request):
     listings = Listing.objects.all()
-    return render(request, 'listings/index.html', {"listings": listings})
+    return render(request, 'listings/index.html', {"listings": listings})  # Отображаем все объявления
+
 
 @login_required
 @user_is_landlord
 def view_my_listings(request):
     listings = Listing.objects.filter(owner=request.user)
-    for list in listings:
-        print(list)
-    return render(request, 'listings/my_listings.html', {"listings": listings})
+    return render(request, 'listings/my_listings.html', {"listings": listings})  # Отображаем мои объявления
 
 
-
-
-
+# API представления (если потребуется)
 # class ListingViewSet(viewsets.ModelViewSet):
 #     queryset = Listing.objects.all()
 #     serializer_class = ListingSerializer
@@ -100,4 +94,3 @@ def view_my_listings(request):
 #
 #     def perform_create(self, serializer):
 #         serializer.save(user=self.request.user)
-

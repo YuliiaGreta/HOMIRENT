@@ -2,33 +2,29 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Все объявления</title>
 </head>
 <body>
- <button>create</button>
-<ul>
-    {% for listing in listings %}
-    <li>
-
-    {{ listing.title }}
+    <h1>Все объявления</h1>
     <ul>
+        {% for listing in listings %}
         <li>
-             {{ listing.description }}
+            <h2>{{ listing.title }}</h2>
+            <ul>
+                <li><b>Описание:</b> {{ listing.description }}</li>
+                <li><b>Местоположение:</b> {{ listing.location }}</li>
+                <li><b>Цена:</b> {{ listing.price }}</li>
+                <li><b>Комнаты:</b> {{ listing.rooms }}</li>
+                <li><b>Владелец:</b> {{ listing.owner.username }}</li>
+                <li><b>Тип недвижимости:</b> {{ listing.property_type }}</li>
+                <li><b>Создано:</b> {{ listing.created_at }}</li>
+                <li><b>Обновлено:</b> {{ listing.updated_at }}</li>
+                <li><b>Статус:</b> {% if listing.status %}Активно{% else %}Неактивно{% endif %}</li>
+            </ul>
         </li>
-        <li><b>location</b>:{{ listing.location }}</li>
-        <li><b>price</b>:{{ listing.price }}</li>
-        <li><b>rooms</b>:{{ listing.owner }}</li>
-        <li><b>owner</b>:{{ listing.rooms }}</li>
-        <li><b>property type</b>:{{ listing.property_type }}</li>
-        <li> <b>created at</b>:{{ listing.created_at }}</li>
-        <li> <b>updated at</b>:{{ listing.updated_at}}</li>
-
+        <button>Редактировать</button>
+        <button>Удалить</button>
+        {% endfor %}
     </ul>
-    </li>
-        <button>Edit</button>
-        <button>delete</button>
-
-    {% endfor %}
-</ul>
 </body>
 </html>

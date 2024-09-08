@@ -7,6 +7,7 @@ from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm
 from listings.models import Listing
+from django.views.generic import ListView
 
 
 def register(request):
@@ -41,6 +42,23 @@ def user_login(request):
         form = AuthenticationForm()
     return render(request, 'user/login.html', {'form': form})
 
-def  view_listings(request):
+def view_listings(request):
     listings = Listing.objects.all()
     return render(request, 'user/all_listings.html', {'listings': listings})
+
+class ListingListView(ListView):
+    model = Listing
+    template_name = 'user/all_listings.html'
+    def get_queryset(self):
+        queryset = Listing.objects.all()
+        sort_by = self.request.GET.get('sort_by')
+        order = self.request.GET.get('order')
+        if sort_by and order:
+            if order == 'asc':
+                queryset = queryset.order_by(sort_by)
+            elif order == 'desc':
+                queryset = queryset.order_by(f'-{sort_by}')
+        return queryset
+
+
+

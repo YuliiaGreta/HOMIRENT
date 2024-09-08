@@ -17,13 +17,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView  # Импорт JWT представлений
-from listings import views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('listings.urls')),
+    # path('api/', include('listings.urls')),  # Для API
+    path('listings/', include('listings.urls')),  # Подключение приложения listings
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('user/', include('user.urls')),
-    # Другие маршруты...
-]
+    path('user/', include('user.urls', namespace='user')),  # Для приложения user
+    path('booking/', include('booking.urls')),
+    path('reviews/', include('reviews.urls')),
+    path('search/', include('search.urls')),
 
+]

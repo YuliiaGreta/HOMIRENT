@@ -1,32 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Listing Details</title>
+    <title>Подробности объявления</title>
 </head>
 <body>
-    <h1>Listing Details</h1>
+    <h1>Подробности объявления</h1>
 
-    <!-- Вывод заголовка объявления -->
     <h2>{{ listing.title }}</h2>
+    <p><strong>Описание:</strong> {{ listing.description }}</p>
+    <p><strong>Местоположение:</strong> {{ listing.location }}</p>
+    <p><strong>Цена:</strong> {{ listing.price }}</p>
+    <p><strong>Количество комнат:</strong> {{ listing.rooms }}</p>
+    <p><strong>Тип жилья:</strong> {{ listing.property_type }}</p>
+    <p><strong>Владелец:</strong> {{ listing.owner.username }}</p>
+    <p><strong>Статус:</strong> {% if listing.status %}Активно{% else %}Неактивно{% endif %}</p>
 
-    <!-- Вывод описания объявления -->
-    <p><strong>Description:</strong> {{ listing.description }}</p>
-
-    <!-- Вывод цены объявления -->
-    <p><strong>Price:</strong> ${{ listing.price }}</p>
-
-    <!-- Вывод имени владельца объявления -->
-    <p><strong>Owner:</strong> {{ listing.owner.username }}</p>
-
-    <!-- Добавьте другие поля по мере необходимости -->
-
-    <!-- Ссылки для редактирования и удаления, если пользователь - владелец объявления -->
     {% if request.user == listing.owner %}
-        <a href="{% url 'edit_listing' listing.pk %}">Edit Listing</a>
-        <a href="{% url 'delete_listing' listing.pk %}">Delete Listing</a>
-
+        <a href="{% url 'edit_listing' listing.pk %}">Редактировать</a>
+        <a href="{% url 'delete_listing' listing.pk %}">Удалить</a>
     {% endif %}
-<a href="{% url 'user:logout' %}">Logout</a>
-
+    <a href="{% url 'user:logout' %}">Выйти</a>
 </body>
 </html>

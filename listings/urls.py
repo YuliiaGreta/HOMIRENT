@@ -16,10 +16,11 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('listings/new/', views.create_listing, name='create_listing'),
-    path('listings/<int:pk>/edit/', views.edit_listing, name='edit_listing'),
-    path('listings/<int:pk>/delete/', views.delete_listing, name='delete_listing'),
-    path('listings/<int:pk>/', views.listing_detail, name='listing_detail'),
-    path('listings/viewall/', views.view_all_listings, name='viewall'),
-    path('listings/my/', views.view_my_listings, name='my_listings'),
+    path('new/', views.create_listing, name='create_listing'),
+    path('<int:pk>/edit/', views.edit_listing, name='edit_listing'),
+    path('<int:pk>/delete/', views.delete_listing, name='delete_listing'),
+    path('<int:pk>/', views.listing_detail, name='listing_detail'),
+    path('viewall/', views.view_all_listings, name='viewall'),
+    path('my/', views.view_my_listings, name='my_listings'),
+
 ]
