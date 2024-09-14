@@ -2,44 +2,70 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>all listings</title>
+    <title>All Listings</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
 </head>
 <body>
- <h1>All listings</h1>
-  <form id="sortForm">
-        <select id="sortBy" name="sort_by">
-            <option value="name">By Name</option>
-            <option value="price">By Price</option>
+    <h1>All Listings</h1>
+
+    <!-- Форма для поиска и фильтрации -->
+    <form method="GET" id="filterForm">
+        <!-- Поиск по заголовку и описанию -->
+        <input type="text" name="q" placeholder="Search by title or description" value="{{ request.GET.q }}">
+
+        <!-- Фильтрация по цене -->
+        <input type="number" name="min_price" placeholder="Min Price" value="{{ request.GET.min_price }}">
+        <input type="number" name="max_price" placeholder="Max Price" value="{{ request.GET.max_price }}">
+
+        <!-- Фильтрация по местоположению -->
+        <input type="text" name="location" placeholder="Location" value="{{ request.GET.location }}">
+
+        <!-- Фильтрация по количеству комнат -->
+        <input type="number" name="room_count" placeholder="Min Rooms" value="{{ request.GET.room_count }}">
+
+        <!-- Фильтрация по типу жилья -->
+        <select name="property_type">
+            <option value="">All Types</option>
+            <option value="Apartment" {% if request.GET.property_type == 'Apartment' %}selected{% endif %}>Apartment</option>
+            <option value="House" {% if request.GET.property_type == 'House' %}selected{% endif %}>House</option>
+            <option value="Studio" {% if request.GET.property_type == 'Studio' %}selected{% endif %}>Studio</option>
         </select>
-        <select id="orderBy" name="order">
-            <option value="asc">Ascending</option>
-            <option value="desc">Descending</option>
+
+        <!-- Сортировка по цене или дате добавления -->
+        <select name="sort_by">
+            <option value="price" {% if request.GET.sort_by == 'price' %}selected{% endif %}>Sort by Price</option>
+            <option value="created_at" {% if request.GET.sort_by == 'created_at' %}selected{% endif %}>Sort by Date</option>
         </select>
-        <button type="submit">Sort</button>
+
+        <!-- Порядок сортировки (возрастание или убывание) -->
+        <select name="order">
+            <option value="asc" {% if request.GET.order == 'asc' %}selected{% endif %}>Ascending</option>
+            <option value="desc" {% if request.GET.order == 'desc' %}selected{% endif %}>Descending</option>
+        </select>
+
+        <button type="submit">Filter</button>
     </form>
 
-<ul id="itemList">
-    {% for listing in listings %}
-    <li>{{listing.title}}<br>
-        {{ listing.description}}<br>
-        {{ listing.location}}<br>
-        {{ listing.price}}<br>
-        {{ listing.rooms}}<br>
-        {{ listing.property_type}}<br>
-        {{ listing.status}}<br>
-        {{ listing.owner}}<br>
-        {{ listing.created_at}}<br>
-        {{ listing.updated_at}}<br>
-    </li>
-    {% empty %}
-    <li>Listings not found
+    <!-- Список объявлений -->
+    <ul id="itemList">
+        {% for listing in listings %}
+        <li>
+            <h2>{{ listing.title }}</h2>
+            <p>{{ listing.description }}</p>
+            <p>Location: {{ listing.location }}</p>
+            <p>Price: {{ listing.price }}</p>
+            <p>Rooms: {{ listing.room_count }}</p>
+            <p>Type: {{ listing.housing_type }}</p>
+            <p>Created at: {{ listing.created_at }}</p>
+            <p>Updated at: {{ listing.updated_at }}</p>
+        </li>
+        {% empty %}
+        <li>No listings found</li>
+        {% endfor %}
+    </ul>
 
-    </li>
-    {% endfor %}
-</ul>
- <script>
+    <!-- Сортировка и фильтрация через форму -->
+    <script>
         $('#sortForm').on('submit', function(e) {
             e.preventDefault();
             let formData = $(this).serialize();
@@ -53,6 +79,5 @@
             });
         });
     </script>
-
 </body>
 </html>

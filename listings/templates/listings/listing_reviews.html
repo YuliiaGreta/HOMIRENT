@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<h2>Отзывы для {{ listing.title }}</h2>
+{% for review in reviews %}
+    <div>
+        <strong>{{ review.user.username }}</strong>:
+        <p>Рейтинг: {{ review.rating }} | {{ review.comment }}</p>
+    </div>
+{% empty %}
+    <p>Пока нет отзывов.</p>
+{% endfor %}

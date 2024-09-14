@@ -4,12 +4,12 @@ from rest_framework import viewsets, filters
 from rest_framework.exceptions import PermissionDenied
 from django_filters.rest_framework import DjangoFilterBackend
 
-from .models import Listing  # Импортируем обе модели
+from .models import Listing, Rating # Импортируем обе модели
 from .serializers import ListingSerializer
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from .forms import ListingForm
 from .decorators import user_is_landlord
-
+from .forms import RatingForm
 
 @login_required
 @user_is_landlord
@@ -70,27 +70,36 @@ def view_all_listings(request):
 @user_is_landlord
 def view_my_listings(request):
     listings = Listing.objects.filter(owner=request.user)
+    print(list(listings.values()))
     return render(request, 'listings/my_listings.html', {"listings": listings})  # Отображаем мои объявления
 
+@login_required
+def add_rating(request, pk):
+    listing = get_object_or_404(Listing, pk=pk)
 
-# API представления (если потребуется)
-# class ListingViewSet(viewsets.ModelViewSet):
-#     queryset = Listing.objects.all()
-#     serializer_class = ListingSerializer
-#     permission_classes = [IsAuthenticatedOrReadOnly]
-#     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-#     filterset_fields = ['price', 'location', 'rooms', 'property_type']
-#     search_fields = ['title', 'description']
-#     ordering_fields = ['price', 'created_at']
-#
-#     def perform_create(self, serializer):
-#         serializer.save(owner=self.request.user)
-#
+    user_bookings = request.user.bookings.filter(listing=listing)  # Проверка на бронирование
+    if not user_bookings.exists():
+        return render(request, 'listings/error.html', {'message': 'Вы должны забронировать это объявление, чтобы оставить рейтинг.'})
 
-# class BookingViewSet(viewsets.ModelViewSet):
-#     queryset = Booking.objects.all()
-#     serializer_class = BookingSerializer
-#     permission_classes = [IsAuthenticated]
-#
-#     def perform_create(self, serializer):
-#         serializer.save(user=self.request.user)
+    existing_rating = Rating.objects.filter(listing=listing, user=request.user).first()
+    if existing_rating:
+        return render(request, 'listings/error.html', {'message': 'Вы уже оставляли рейтинг для этого объявления.'})
+
+    if request.method == 'POST':
+        form = RatingForm(request.POST)
+        if form.is_valid():
+            rating = form.save(commit=False)
+            rating.user = request.user
+            rating.listing = listing
+            rating.save()
+            return redirect('listing_detail', pk=listing.pk)
+    else:
+        form = RatingForm()
+
+    return render(request, 'listings/add_rating.html', {'form': form, 'listing': listing})
+
+@login_required
+def listing_reviews(request, pk):
+    listing = get_object_or_404(Listing, pk=pk)
+    reviews = Rating.objects.filter(listing=listing)
+    return render(request, 'listings/listing_reviews.html', {'listing': listing, 'reviews': reviews})

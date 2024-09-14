@@ -10,6 +10,4 @@ urlpatterns = [
     path('login/', views.user_login, name='login'),
     path('items/', views.ListingListView.as_view(), name='item-list')
 
-
-
 ]

@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'django_filters',
     'user',
     'booking',
-    'reviews',
+
     'search',
     'rest_framework_simplejwt',
 ]
@@ -94,12 +94,24 @@ WSGI_APPLICATION = 'Rental.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'renthub_db',  # Имя базы данных, как указано в docker-compose
+        'USER': 'admin',       # Имя пользователя
+        'PASSWORD': 'Qwerty123456',  # Пароль пользователя
+        'HOST': '127.0.0.1',  # Хост (внутренний адрес контейнера)
+        'PORT': '3306',        # Порт
     }
 }
+
 
 
 # Password validation
