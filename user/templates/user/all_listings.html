@@ -8,76 +8,58 @@
 <body>
     <h1>All Listings</h1>
 
-    <!-- Форма для поиска и фильтрации -->
+    <!-- Форма для фильтрации и сортировки -->
     <form method="GET" id="filterForm">
-        <!-- Поиск по заголовку и описанию -->
-        <input type="text" name="q" placeholder="Search by title or description" value="{{ request.GET.q }}">
+    <!-- Поиск по заголовку и описанию -->
+    <input type="text" name="q" placeholder="Search by title or description" value="{{ request.GET.q }}">
 
-        <!-- Фильтрация по цене -->
-        <input type="number" name="min_price" placeholder="Min Price" value="{{ request.GET.min_price }}">
-        <input type="number" name="max_price" placeholder="Max Price" value="{{ request.GET.max_price }}">
+    <!-- Фильтрация по цене -->
+    <input type="number" name="min_price" placeholder="Min Price" value="{{ request.GET.min_price }}">
+    <input type="number" name="max_price" placeholder="Max Price" value="{{ request.GET.max_price }}">
 
-        <!-- Фильтрация по местоположению -->
-        <input type="text" name="location" placeholder="Location" value="{{ request.GET.location }}">
+    <!-- Фильтрация по местоположению -->
+    <input type="text" name="location" placeholder="Location" value="{{ request.GET.location }}">
 
-        <!-- Фильтрация по количеству комнат -->
-        <input type="number" name="room_count" placeholder="Min Rooms" value="{{ request.GET.room_count }}">
+    <!-- Фильтрация по количеству комнат -->
+    <input type="number" name="rooms" placeholder="Min Rooms" value="{{ request.GET.rooms }}">
 
-        <!-- Фильтрация по типу жилья -->
-        <select name="property_type">
-            <option value="">All Types</option>
-            <option value="Apartment" {% if request.GET.property_type == 'Apartment' %}selected{% endif %}>Apartment</option>
-            <option value="House" {% if request.GET.property_type == 'House' %}selected{% endif %}>House</option>
-            <option value="Studio" {% if request.GET.property_type == 'Studio' %}selected{% endif %}>Studio</option>
-        </select>
+    <!-- Фильтрация по типу жилья -->
+    <select name="property_type">
+        <option value="">All Types</option>
+        <option value="Apartment" {% if request.GET.property_type == 'Apartment' %}selected{% endif %}>Apartment</option>
+        <option value="House" {% if request.GET.property_type == 'House' %}selected{% endif %}>House</option>
+        <option value="Studio" {% if request.GET.property_type == 'Studio' %}selected{% endif %}>Studio</option>
+    </select>
 
-        <!-- Сортировка по цене или дате добавления -->
-        <select name="sort_by">
-            <option value="price" {% if request.GET.sort_by == 'price' %}selected{% endif %}>Sort by Price</option>
-            <option value="created_at" {% if request.GET.sort_by == 'created_at' %}selected{% endif %}>Sort by Date</option>
-        </select>
+    <!-- Сортировка -->
+    <select name="sort_by">
+        <option value="title" {% if request.GET.sort_by == 'title' %}selected{% endif %}>Sort by Title</option>
+        <option value="price" {% if request.GET.sort_by == 'price' %}selected{% endif %}>Sort by Price</option>
+        <option value="created_at" {% if request.GET.sort_by == 'created_at' %}selected{% endif %}>Sort by Date</option>
+    </select>
 
-        <!-- Порядок сортировки (возрастание или убывание) -->
-        <select name="order">
-            <option value="asc" {% if request.GET.order == 'asc' %}selected{% endif %}>Ascending</option>
-            <option value="desc" {% if request.GET.order == 'desc' %}selected{% endif %}>Descending</option>
-        </select>
+    <!-- Порядок сортировки -->
+    <select name="order">
+        <option value="asc" {% if request.GET.order == 'asc' %}selected{% endif %}>Ascending</option>
+        <option value="desc" {% if request.GET.order == 'desc' %}selected{% endif %}>Descending</option>
+    </select>
 
-        <button type="submit">Filter</button>
-    </form>
-
-    <!-- Список объявлений -->
-    <ul id="itemList">
-        {% for listing in listings %}
+    <button type="submit">Filter</button>
+</form>
+<ul id="itemList">
+    {% for listing in listings %}
         <li>
-            <h2>{{ listing.title }}</h2>
-            <p>{{ listing.description }}</p>
-            <p>Location: {{ listing.location }}</p>
-            <p>Price: {{ listing.price }}</p>
-            <p>Rooms: {{ listing.room_count }}</p>
-            <p>Type: {{ listing.housing_type }}</p>
-            <p>Created at: {{ listing.created_at }}</p>
-            <p>Updated at: {{ listing.updated_at }}</p>
+            <strong>{{ listing.title }}</strong><br>
+            {{ listing.description }}<br>
+            <strong>Location:</strong> {{ listing.location }}<br>
+            <strong>Price:</strong> {{ listing.price }}<br>
+            <strong>Rooms:</strong> {{ listing.rooms }}<br>
+            <strong>Type:</strong> {{ listing.property_type }}<br>
+            <strong>Created at:</strong> {{ listing.created_at }}<br>
+            <strong>Updated at:</strong> {{ listing.updated_at }}<br>
         </li>
-        {% empty %}
+    {% empty %}
         <li>No listings found</li>
-        {% endfor %}
-    </ul>
+    {% endfor %}
+</ul>
 
-    <!-- Сортировка и фильтрация через форму -->
-    <script>
-        $('#sortForm').on('submit', function(e) {
-            e.preventDefault();
-            let formData = $(this).serialize();
-            $.ajax({
-                url: "{% url 'user:item-list' %}",
-                method: 'GET',
-                data: formData,
-                success: function(response) {
-                    $('#itemList').html(response);
-                }
-            });
-        });
-    </script>
-</body>
-</html>

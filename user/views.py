@@ -56,32 +56,47 @@ class ListingListView(ListView):
     def get_queryset(self):
         queryset = Listing.objects.all()
 
-        # Пол параметры
+        # Получение параметров фильтрации
         min_price = self.request.GET.get('min_price')
         max_price = self.request.GET.get('max_price')
         location = self.request.GET.get('location')
-        room_count = self.request.GET.get('room_count')
-        property_type = self.request.GET.get('property_type')  # Исправлено название переменной
-        sort_by = self.request.GET.get('sort_by', 'created_at')  # По умолчанию сортировка по дате добавления
-        order = self.request.GET.get('order', 'asc')  # По умолчанию сортировка по возрастанию
+        rooms = self.request.GET.get('rooms')
+        property_type = self.request.GET.get('property_type')
+        sort_by = self.request.GET.get('sort_by', 'title')  # Сортировка по умолчанию по названию
+        order = self.request.GET.get('order', 'asc')  # По умолчанию по возрастанию
 
-        # Фильтр по параметрам
+        # Фильтрация по цене
         if min_price:
-            queryset = queryset.filter(price__gte=min_price)
+            try:
+                min_price = float(min_price)
+                queryset = queryset.filter(price__gte=min_price)
+            except ValueError:
+                print("Invalid min_price value")
+
         if max_price:
-            queryset = queryset.filter(price__lte=max_price)
+            try:
+                max_price = float(max_price)
+                queryset = queryset.filter(price__lte=max_price)
+            except ValueError:
+                print("Invalid max_price value")
+
+        # Фильтрация по местоположению
         if location:
             queryset = queryset.filter(location__icontains=location)
-        if room_count:
-            queryset = queryset.filter(room_count__gte=room_count)
+
+        # Фильтрация по количеству комнат
+        if rooms:
+            queryset = queryset.filter(rooms__gte=rooms)
+
+        # Фильтрация по типу жилья
         if property_type:
-            queryset = queryset.filter(housing_type__icontains=property_type)
+            queryset = queryset.filter(property_type__icontains=property_type)
 
         # Сортировка
-        if sort_by:
+        if sort_by in ['title', 'price', 'created_at']:
             if order == 'asc':
                 queryset = queryset.order_by(sort_by)
-            elif order == 'desc':
+            else:
                 queryset = queryset.order_by(f'-{sort_by}')
 
         return queryset

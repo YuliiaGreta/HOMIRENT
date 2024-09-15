@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<h1>Ваши уведомления</h1>
+
+<ul>
+    {% for notification in notifications %}
+    <li>
+        {{ notification.message }} | <a href="{% url 'confirm_booking' notification.listing.id %}">Подтвердить бронирование</a>
+    </li>
+    {% empty %}
+    <li>У вас пока нет новых уведомлений.</li>
+    {% endfor %}
+</ul>

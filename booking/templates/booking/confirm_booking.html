@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<h1>Подтверждение бронирования</h1>
+<p>Подтвердить бронирование для {{ booking.listing.title }} от пользователя {{ booking.user.username }} на даты {{ booking.start_date }} - {{ booking.end_date }}?</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Подтвердить</button>
+    <a href="{% url 'notifications_list' %}">Назад</a>
+</form>

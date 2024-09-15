@@ -9,6 +9,7 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('user/', include('user.urls')),  # Для приложения user
     path('booking/', include('booking.urls')),  # Бронирования
-    path('search/', include('search.urls')),  # Поиск
+    path('search/', include('search.urls')),
+    path('listings/', include('listings.urls')), # Поиск
 
 ]

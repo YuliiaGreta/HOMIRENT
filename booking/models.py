@@ -1,38 +1,40 @@
 from django.db import models
 from rest_framework.exceptions import ValidationError
-
+from django.contrib.auth import get_user_model
 from listings.models import Listing
 from django.conf import settings
 
+User = get_user_model()
+
 class Booking(models.Model):
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='bookings'
-    )
-    listing = models.ForeignKey(
-        Listing, on_delete=models.CASCADE, related_name='bookings'
-    )
+    listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     start_date = models.DateField()
     end_date = models.DateField()
     is_confirmed = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f'{self.user.username} - {self.listing.title} ({self.start_date} - {self.end_date})'
+    created_at = models.DateTimeField(auto_now_add=True)  # Добавляем auto_now_add=True
 
     def book(self):
-        if self.start_date > self.end_date:
-            raise ValidationError('Start date must be before end date')
+        # Проверка на наличие пересекающихся бронирований
+        overlapping_bookings = Booking.objects.filter(
+            listing=self.listing,
+            start_date__lt=self.end_date,
+            end_date__gt=self.start_date
+        ).exists()
 
-        all_booking = Booking.objects.all()
-        # if all_booking.exclude(start_date__gt=self.start_date, listing=self.listing):
-        #     print(all_booking.exclude(start_date__gt=self.start_date, listing=self.listing))
-        #     raise ValidationError('Booking already exists')
-        if all_booking.exclude(end_date__lt=self.start_date, start_date__gt=self.end_date, listing=self.listing):
-            print(all_booking.exclude(end_date__lt=self.end_date, start_date__gt=self.start_date, listing=self.listing))
+        if overlapping_bookings:
             raise ValidationError('Booking already exists')
-        #if all_booking:
-            #if all_booking.
 
     def save(self, *args, **kwargs):
-        self.book()
-        super().save(*args, **kwargs)
+        self.book()  # Проверка перед сохранением
+        super().save(*args, **kwargs)  # Сохранение записи
+
+class Notification(models.Model):
+    recipient = models.ForeignKey(User, on_delete=models.CASCADE)  # Получатель уведомления (арендодатель)
+    listing = models.ForeignKey(Listing, on_delete=models.CASCADE)  # Объявление, к которому относится уведомление
+    message = models.TextField()  # Сообщение уведомления
+    created_at = models.DateTimeField(auto_now_add=True)  # Дата создания уведомления
+    is_read = models.BooleanField(default=False)  # Прочитано или нет
+
+    def __str__(self):
+        return f"Уведомление для {self.recipient.username} о {self.listing.title}"

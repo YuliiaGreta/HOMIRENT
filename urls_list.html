@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Тестирование URL-адресов</title>
+</head>
+<body>
+    <h1>Список URL-адресов для тестирования:</h1>
+
+    <h3>Пользовательские URL-адреса:</h3>
+    <ul>
+        <li><a href="http://127.0.0.1:8000/user/homepage/">Домашняя страница пользователя</a></li>
+        <li><a href="http://127.0.0.1:8000/user/register/">Регистрация</a></li>
+        <li><a href="http://127.0.0.1:8000/user/login/">Вход</a></li>
+        <li><a href="http://127.0.0.1:8000/user/logout/">Выход</a></li>
+        <li><a href="http://127.0.0.1:8000/user/items/">Список объявлений</a></li>
+    </ul>
+
+    <h3>Бронирования:</h3>
+    <ul>
+        <li><a href="http://127.0.0.1:8000/booking/list/">Список бронирований</a></li>
+        <li>Отмена бронирования: <code>http://127.0.0.1:8000/booking/cancel/&lt;booking_id&gt;/</code></li>
+        <li>Подтверждение бронирования: <code>http://127.0.0.1:8000/booking/confirm/&lt;booking_id&gt;/</code></li>
+        <li>Создание бронирования: <code>http://127.0.0.1:8000/booking/new/&lt;listing_id&gt;/</code></li>
+    </ul>
+
+    <h3>Объявления:</h3>
+    <ul>
+        <li><a href="http://127.0.0.1:8000/viewall/">Просмотр всех объявлений</a></li>
+    </ul>
+</body>
+</html>

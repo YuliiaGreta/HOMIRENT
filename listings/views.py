@@ -77,7 +77,7 @@ def view_my_listings(request):
 def add_rating(request, pk):
     listing = get_object_or_404(Listing, pk=pk)
 
-    user_bookings = request.user.bookings.filter(listing=listing)  # Проверка на бронирование
+    user_bookings = request.user.booking_set.filter(listing=listing)  # Проверка на бронирование
     if not user_bookings.exists():
         return render(request, 'listings/error.html', {'message': 'Вы должны забронировать это объявление, чтобы оставить рейтинг.'})
 

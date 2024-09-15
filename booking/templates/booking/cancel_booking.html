@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<h1>Отмена бронирования</h1>
+<p>Вы действительно хотите отменить бронирование для {{ booking.listing.title }} на даты {{ booking.start_date }} - {{ booking.end_date }}?</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Отменить</button>
+    <a href="{% url 'booking_list' %}">Назад</a>
+</form>
