@@ -25,5 +25,6 @@ urlpatterns = [
     path('listing/<int:pk>/rate/', views.add_rating, name='add_rating'),
     path('listing/<int:pk>/reviews/', views.listing_reviews, name='listing_reviews'),
     path('listings/', views.view_all_listings, name='listings_list'),
+    path('', views.home, name='home'),
 
 ]

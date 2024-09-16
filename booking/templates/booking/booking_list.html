@@ -1,19 +1,9 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <title>My Bookings</title>
-</head>
-<body>
-    <h1>My Bookings</h1>
-
-    {% if bookings %}
-        <ul>
-        {% for booking in bookings %}
-            <li>{{ booking.listing.title }}: {{ booking.start_date }} - {{ booking.end_date }}</li>
-        {% endfor %}
-        </ul>
-    {% else %}
-        <p>No bookings found.</p>
-    {% endif %}
-</body>
-</html>
+<h2>My Bookings</h2>
+<ul>
+    {% for booking in bookings %}
+        <li>{{ booking.listing.title }}: {{ booking.start_date }} - {{ booking.end_date }}</li>
+    {% empty %}
+        <li>No bookings found.</li>
+    {% endfor %}
+</ul>

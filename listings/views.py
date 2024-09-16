@@ -77,13 +77,15 @@ def view_my_listings(request):
 def add_rating(request, pk):
     listing = get_object_or_404(Listing, pk=pk)
 
-    user_bookings = request.user.booking_set.filter(listing=listing)  # Проверка на бронирование
+    # Проверка, что пользователь бронировал это объявление
+    user_bookings = request.user.booking_set.filter(listing=listing)
     if not user_bookings.exists():
-        return render(request, 'listings/error.html', {'message': 'Вы должны забронировать это объявление, чтобы оставить рейтинг.'})
+        return render(request, 'listings/error.html', {'message': 'Вы должны забронировать это объявление, чтобы оставить отзыв.'})
 
+    # Проверка, оставлял ли пользователь уже отзыв
     existing_rating = Rating.objects.filter(listing=listing, user=request.user).first()
     if existing_rating:
-        return render(request, 'listings/error.html', {'message': 'Вы уже оставляли рейтинг для этого объявления.'})
+        return render(request, 'listings/error.html', {'message': 'Вы уже оставили отзыв для этого объявления.'})
 
     if request.method == 'POST':
         form = RatingForm(request.POST)
@@ -92,11 +94,14 @@ def add_rating(request, pk):
             rating.user = request.user
             rating.listing = listing
             rating.save()
-            return redirect('listing_detail', pk=listing.pk)
+            return render(request, 'listings/add_rating.html', {'form': form, 'listing': listing, 'message': 'Спасибо за ваш отзыв!'})
     else:
         form = RatingForm()
 
     return render(request, 'listings/add_rating.html', {'form': form, 'listing': listing})
+
+def home(request):
+    return render(request, 'listings/index.html')
 
 @login_required
 def listing_reviews(request, pk):

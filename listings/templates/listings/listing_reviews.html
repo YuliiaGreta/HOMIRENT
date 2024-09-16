@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<h2>Отзывы для {{ listing.title }}</h2>
-{% for review in reviews %}
-    <div>
-        <strong>{{ review.user.username }}</strong>:
-        <p>Рейтинг: {{ review.rating }} | {{ review.comment }}</p>
-    </div>
-{% empty %}
-    <p>Пока нет отзывов.</p>
-{% endfor %}
+<h2>Оставить отзыв для {{ listing.title }}</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Оставить отзыв</button>
+</form>
+
+{% if message %}
+    <p>{{ message }}</p>
+{% endif %}

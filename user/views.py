@@ -4,7 +4,12 @@ from django.contrib.auth.forms import AuthenticationForm
 from .forms import CustomUserCreationForm
 from listings.models import Listing
 from django.views.generic import ListView
+from django.shortcuts import render, get_object_or_404
+from django.contrib.auth import get_user_model
+from booking.models import Booking
 from django.db.models import Q
+
+User = get_user_model()
 
 # Регистрация
 def register(request):
@@ -22,6 +27,10 @@ def register(request):
 def homepage(request):
     return render(request, 'user/home.html')
 
+def user_homepage(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    bookings = Booking.objects.filter(user=user)  # Получение бронирований пользователя
+    return render(request, 'user/homepage.html', {'user': user, 'bookings': bookings})
 
 def user_logout(request):
     logout(request)
