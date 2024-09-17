@@ -14,8 +14,9 @@
 
 from django.urls import path
 from . import views
-
+app_name = 'listings'
 urlpatterns = [
+    path('detail/<int:pk>/', views.listing_detail, name='listing_detail'),
     path('new/', views.create_listing, name='create_listing'),
     path('<int:pk>/edit/', views.edit_listing, name='edit_listing'),
     path('<int:pk>/delete/', views.delete_listing, name='delete_listing'),
@@ -26,5 +27,6 @@ urlpatterns = [
     path('listing/<int:pk>/reviews/', views.listing_reviews, name='listing_reviews'),
     path('listings/', views.view_all_listings, name='listings_list'),
     path('', views.home, name='home'),
+    path('listing/<int:listing_id>/toggle-status/', views.toggle_listing_status, name='toggle_listing_status'),
 
 ]

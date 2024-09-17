@@ -3,13 +3,14 @@ from django.contrib.auth.decorators import login_required
 from rest_framework import viewsets, filters
 from rest_framework.exceptions import PermissionDenied
 from django_filters.rest_framework import DjangoFilterBackend
-
+from django.core.exceptions import PermissionDenied
 from .models import Listing, Rating # Импортируем обе модели
 from .serializers import ListingSerializer
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from .forms import ListingForm
 from .decorators import user_is_landlord
 from .forms import RatingForm
+from django.contrib import messages
 
 @login_required
 @user_is_landlord
@@ -20,7 +21,7 @@ def create_listing(request):
             listing = form.save(commit=False)
             listing.owner = request.user  # Устанавливаем владельца
             listing.save()
-            return redirect('my_listings')
+            return redirect('listings:my_listings')
     else:
         form = ListingForm()  # Пустая форма для создания нового объекта
     return render(request, 'listings/listing_form.html', {'form': form})
@@ -36,7 +37,7 @@ def edit_listing(request, pk):
             listing = form.save(commit=False)
             listing.status = 'status' in request.POST  # Обрабатываем статус (активно/неактивно)
             listing.save()
-            return redirect('my_listings')  # Перенаправляем на страницу с моими объявлениями
+            return redirect('listings:my_listings')  # Перенаправляем на страницу с моими объявлениями
     else:
         form = ListingForm(instance=listing)
     return render(request, 'listings/listing_form.html', {'form': form})  # Отображаем форму редактирования
@@ -49,7 +50,7 @@ def delete_listing(request, pk):
     if listing.owner != request.user:
         raise PermissionDenied
     listing.delete()
-    return redirect('my_listings')  # Перенаправление на страницу с моими объявлениями
+    return redirect('listings:my_listings')  # Перенаправление на страницу с моими объявлениями
 
 
 @login_required
@@ -60,7 +61,6 @@ def listing_detail(request, pk):
 
 
 @login_required
-@user_is_landlord
 def view_all_listings(request):
     listings = Listing.objects.all()
     return render(request, 'listings/index.html', {"listings": listings})  # Отображаем все объявления
@@ -108,3 +108,25 @@ def listing_reviews(request, pk):
     listing = get_object_or_404(Listing, pk=pk)
     reviews = Rating.objects.filter(listing=listing)
     return render(request, 'listings/listing_reviews.html', {'listing': listing, 'reviews': reviews})
+
+
+@login_required
+def toggle_listing_status(request, listing_id):
+    # Получаем объявление
+    listing = get_object_or_404(Listing, pk=listing_id)
+
+    # Проверяем, является ли пользователь владельцем объявления
+    if listing.owner != request.user:
+        raise PermissionDenied("Вы не являетесь владельцем этого объявления")
+
+    # Переключаем статус объявления
+    listing.status = not listing.status
+    listing.save()
+
+    # Добавляем сообщение об успешном изменении статуса
+    if listing.status:
+        messages.success(request, 'Объявление активировано.')
+    else:
+        messages.success(request, 'Объявление деактивировано.')
+
+    return redirect('listings:my_listings')  # Перенаправляем пользователя на страницу с его объявлениями

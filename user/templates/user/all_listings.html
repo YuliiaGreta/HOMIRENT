@@ -1,18 +1,24 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>All Listings</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="{% static 'css/user/all_listings.css' %}">
 </head>
 <body>
+<a href="{% url 'user:homepage' %}">
+    <button class="btn-back">Back</button></a>
     <h1>All Listings</h1>
-
+ <!-- Форма для поиска -->
+    <form action="{% url 'user:search' %}" method="get">
+        <input type="search" name="q" placeholder="Search ">
+        <button type="submit">Search</button>
+        <button><a href="{% url 'user:view_listings' %}">Сбросить поиск</a></button>
+    </form>
     <!-- Форма для фильтрации и сортировки -->
     <form method="GET" id="filterForm">
-    <!-- Поиск по заголовку и описанию -->
-    <input type="text" name="q" placeholder="Search by title or description" value="{{ request.GET.q }}">
-
     <!-- Фильтрация по цене -->
     <input type="number" name="min_price" placeholder="Min Price" value="{{ request.GET.min_price }}">
     <input type="number" name="max_price" placeholder="Max Price" value="{{ request.GET.max_price }}">
@@ -46,20 +52,42 @@
 
     <button type="submit">Filter</button>
 </form>
-<ul id="itemList">
+<div id="itemList" class="listItem">
     {% for listing in listings %}
-        <li>
-            <strong>{{ listing.title }}</strong><br>
-            {{ listing.description }}<br>
-            <strong>Location:</strong> {{ listing.location }}<br>
-            <strong>Price:</strong> {{ listing.price }}<br>
-            <strong>Rooms:</strong> {{ listing.rooms }}<br>
-            <strong>Type:</strong> {{ listing.property_type }}<br>
-            <strong>Created at:</strong> {{ listing.created_at }}<br>
-            <strong>Updated at:</strong> {{ listing.updated_at }}<br>
-        </li>
-    {% empty %}
-        <li>No listings found</li>
-    {% endfor %}
-</ul>
+        <div class="item">
+            <div>
+                <b>title </b>{{listing.title}}<br>
+                <b>description </b>{{ listing.description}}<br>
+                <b>location </b>{{ listing.location}}<br>
+                <b>status</b>
+                {% if listing.status %}
+                    Active
+                {% else %}
+                    No active
+                {% endif %}
+            </div>
+            <div class="buttons">
+                <a href="{% url 'booking:create_booking' listing.id %}" ><button>Booking</button></a>
+                <a href="{% url 'listings:listing_detail' listing.id %}" ><button>Detail</button></a>
+            </div>
+        </div>
 
+       <!-- <b>price </b>{{ listing.price}}<br>
+        <b>rooms </b>{{ listing.rooms}}<br>
+        <b>property_type </b>{{ listing.property_type}}<br>
+        <b>status </b>{{ listing.status}}<br>
+        <b>owner </b>{{ listing.owner}}<br>
+        <b>created_at </b>{{ listing.created_at}}<br>
+        <b>updated_at </b>{{ listing.updated_at}}<br>
+        -->
+        <br>
+    {% empty %}
+    <p>Listings not found
+
+    </p>
+    {% endfor %}
+</div>
+
+
+</body>
+</html>

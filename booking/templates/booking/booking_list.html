@@ -1,9 +1,52 @@
 <!DOCTYPE html>
-<h2>My Bookings</h2>
-<ul>
-    {% for booking in bookings %}
-        <li>{{ booking.listing.title }}: {{ booking.start_date }} - {{ booking.end_date }}</li>
-    {% empty %}
-        <li>No bookings found.</li>
-    {% endfor %}
-</ul>
+<html>
+<head>
+    <title>My Bookings</title>
+</head>
+<body>
+<button><a href="{% url 'user:homepage' %}">Back</a></button>
+    <h1>My Bookings</h1>
+
+    {% if bookings %}
+        {% for booking in bookings %}
+
+           <h1>Детали бронирования</h1>
+        <p>Объявление: {{ booking.listing.title }}</p>
+        <p>Дата начала: {{ booking.start_date }}</p>
+        <p>Дата окончания: {{ booking.end_date }}</p>
+        <p>Статус:
+            {% if booking.is_confirmed == 'confirmed' %}
+                Подвержден
+            {% elif booking.is_confirmed == 'canceled' %}
+                Отклонено
+            {% else %}
+                Ожидает подтверждения
+            {% endif %}
+
+        {% if request.user.role == 'tenant'%}
+                <form action="{% url 'booking:cancel_booking' booking.pk %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Отменить бронирование</button>
+        </form>
+        {% endif %}
+        </p>
+
+    {% if booking.is_confirmed == 'waiting for confirm' and request.user == booking.listing.owner %}
+        <form action="{% url 'booking:confirm_booking' booking.id %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Подтвердить бронирование</button>
+        </form>
+    {% endif %}
+    {% if booking.is_confirmed == 'waiting for confirm' and request.user == booking.listing.owner %}
+         <form action="{% url 'booking:cancel_booking' booking.id %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Отклонить бронирование</button>
+        </form>
+     {% endif %}
+        {% endfor %}
+        
+    {% else %}
+        <p>No bookings found.</p>
+    {% endif %}
+</body>
+</html>

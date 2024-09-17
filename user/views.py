@@ -8,22 +8,30 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth import get_user_model
 from booking.models import Booking
 from django.db.models import Q
+from .decorators import redirect_authenticated_user
+from django.contrib.auth.decorators import login_required
 
 User = get_user_model()
 
 # Регистрация
+@redirect_authenticated_user
 def register(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
+
             return redirect('user:homepage')
+        else:
+            error_message = form.errors.as_text()
     else:
         form = CustomUserCreationForm()
-    return render(request, 'user/register.html', {'form': form})
+        error_message = None
+    return render(request, 'user/register.html', {'form': form, 'error_message': error_message})
 
 
+@login_required
 def homepage(request):
     return render(request, 'user/home.html')
 
@@ -32,11 +40,13 @@ def user_homepage(request, user_id):
     bookings = Booking.objects.filter(user=user)  # Получение бронирований пользователя
     return render(request, 'user/homepage.html', {'user': user, 'bookings': bookings})
 
+@login_required
 def user_logout(request):
     logout(request)
     return redirect('user:login')
 
 
+@redirect_authenticated_user
 def user_login(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
@@ -109,3 +119,17 @@ class ListingListView(ListView):
                 queryset = queryset.order_by(f'-{sort_by}')
 
         return queryset
+
+
+class Search(ListView):
+    template_name = 'user/all_listings.html'
+    context_object_name = 'listings'
+    paginate_by = 5
+
+    def get_queryset(self):
+        return Listing.objects.filter(title__iregex=self.request.GET.get('q'))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['q'] = self.request.GET.get('q')
+        return context

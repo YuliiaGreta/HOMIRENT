@@ -1,11 +1,31 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Home Page</title>
+    <link rel="stylesheet" href="{% static 'css/user/homepage.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sofadi+One&display=swap" rel="stylesheet">
 </head>
 <body>
-<h2>Good job!</h2>
-<a href="{% url 'user:logout' %}">Logout</a>
+<img src="{% static 'img/bg.jpg' %}" class="bg" alt="">
+    <div class="conteiner">
+        <img src="{% static 'img/avatar.png' %}" class="avatar" alt="">
+        <span class="client">{{ request.user }}</span>
+        <a href="{% url 'user:logout' %}">
+            <img src="{% static 'img/logout.png' %}" class="logoutImg" alt="">
+        </a>
+    </div>
+    <p class="textWelcome">Welcome to Rental Site! </p>
+    <div class="btnContainer">
+        <a href="{% url 'user:view_listings' %}">
+        <button class="buttonListing">All Listings</button>
+        </a><br><br>
+        <a href="{% url 'booking:booking_list' %}">
+            <button class="buttonListing">View My Bookings</button>
+        </a>
+    </div>
 </body>
 </html>

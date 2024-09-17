@@ -8,6 +8,7 @@
     <h1>Book {{ listing.title }}</h1>
     <form method="POST">
         {% csrf_token %}
+        <b>Listings</b> {{ listing.title }}
         {{ form.as_p }}
         <button type="submit">Book Now</button>
     </form>

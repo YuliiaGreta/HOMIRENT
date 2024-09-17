@@ -1,16 +1,22 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Register</title>
+    <link rel="stylesheet" href="{% static 'css/user/register.css' %}" type="text/css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
 </head>
 <body>
-<h2>Register</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Register</button>
-</form>
-<p>Have an account? <a href="{% url 'user:login' %}">Login here</a>.</p>
+    <h2>Register</h2>
+    <form method="post" class="formRegister">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btnRegist">Register</button>
+    </form>
+    <p>Have an account? <a href="{% url 'user:login' %}">Login here</a>.</p>
+
 </body>
 </html>

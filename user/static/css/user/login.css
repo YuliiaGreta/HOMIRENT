@@ -1,0 +1,37 @@
+body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #d1b5b5;
+    font-family: "Playfair Display", serif;
+    justify-content: center;
+    height: 100vh;
+}
+.formLogin{
+    background: #ffffff;
+    width: 450px;
+    padding: 21px;
+    display: flex;
+    border-radius: 20px;
+    flex-direction: column;
+}
+.formLogin p{
+    display: flex;
+    flex-direction: column;
+    font-weight: 500;
+    font-size: 15px;
+}
+.formLogin input{
+    height: 25px;
+}
+.btnLogin{
+    height: 35px;
+    border-radius: 15px;
+    border: none;
+    background-color: #e592d6;
+    font-size: 18px;
+}
+.btnLogin:hover{
+    background-color: #9a3e8b;
+    color: white;
+}

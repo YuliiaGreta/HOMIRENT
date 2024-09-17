@@ -13,8 +13,6 @@
     <p><strong>Владелец:</strong> {{ user.username }}</p>
 
     <!-- Добавляем возможность управления статусом объявления -->
-    <label for="status">Активно:</label>
-    <input type="checkbox" name="status" id="status" {% if form.instance.status %}checked{% endif %}>
 
     <button type="submit">
         {% if form.instance.pk %}
@@ -24,6 +22,7 @@
         {% endif %}
     </button>
 </form>
-<a href="{% url 'user:logout' %}">Logout</a>
+<a href="{% url 'listings:my_listings' %}">
+    <button>Back</button></a>
 </body>
 </html>
