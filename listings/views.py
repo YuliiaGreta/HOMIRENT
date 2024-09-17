@@ -3,13 +3,14 @@ from django.contrib.auth.decorators import login_required
 from rest_framework import viewsets, filters
 from rest_framework.exceptions import PermissionDenied
 from django_filters.rest_framework import DjangoFilterBackend
-
+from django.core.exceptions import PermissionDenied
 from .models import Listing, Rating # Импортируем обе модели
 from .serializers import ListingSerializer
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from .forms import ListingForm
 from .decorators import user_is_landlord
 from .forms import RatingForm
+from django.contrib import messages
 
 @login_required
 @user_is_landlord
@@ -108,3 +109,25 @@ def listing_reviews(request, pk):
     listing = get_object_or_404(Listing, pk=pk)
     reviews = Rating.objects.filter(listing=listing)
     return render(request, 'listings/listing_reviews.html', {'listing': listing, 'reviews': reviews})
+
+
+@login_required
+def toggle_listing_status(request, listing_id):
+    # Получаем объявление
+    listing = get_object_or_404(Listing, pk=listing_id)
+
+    # Проверяем, является ли пользователь владельцем объявления
+    if listing.owner != request.user:
+        raise PermissionDenied("Вы не являетесь владельцем этого объявления")
+
+    # Переключаем статус объявления
+    listing.status = not listing.status
+    listing.save()
+
+    # Добавляем сообщение об успешном изменении статуса
+    if listing.status:
+        messages.success(request, 'Объявление активировано.')
+    else:
+        messages.success(request, 'Объявление деактивировано.')
+
+    return redirect('my_listings')  # Перенаправляем пользователя на страницу с его объявлениями

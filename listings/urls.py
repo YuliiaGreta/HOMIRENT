@@ -26,5 +26,6 @@ urlpatterns = [
     path('listing/<int:pk>/reviews/', views.listing_reviews, name='listing_reviews'),
     path('listings/', views.view_all_listings, name='listings_list'),
     path('', views.home, name='home'),
+    path('listing/<int:listing_id>/toggle-status/', views.toggle_listing_status, name='toggle_listing_status'),
 
 ]

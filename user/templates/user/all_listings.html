@@ -57,9 +57,12 @@
             <strong>Type:</strong> {{ listing.property_type }}<br>
             <strong>Created at:</strong> {{ listing.created_at }}<br>
             <strong>Updated at:</strong> {{ listing.updated_at }}<br>
+            <strong>{% if listing.status %}Активно{% else %}Неактивно{% endif %}</strong> <!-- Отображение статуса -->
         </li>
+
     {% empty %}
         <li>No listings found</li>
     {% endfor %}
 </ul>
+
 
