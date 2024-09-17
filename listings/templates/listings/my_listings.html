@@ -78,7 +78,11 @@
                     </form>
                 </td>
                 <td>
+<<<<<<< HEAD
                     <form action="{% url 'listings:toggle_listing_status' listing.pk %}" method="post">
+=======
+                    <form action="{% url 'toggle_listing_status' listing.pk %}" method="post">
+>>>>>>> 621bda8a80e27402bf9741047b8ec1cc22cc0556
                         {% csrf_token %}
                         <button type="submit" class="toggle-status">
                             {% if listing.status %}

@@ -129,4 +129,8 @@ def toggle_listing_status(request, listing_id):
     else:
         messages.success(request, 'Объявление деактивировано.')
 
+<<<<<<< HEAD
     return redirect('listings:my_listings')  # Перенаправляем пользователя на страницу с его объявлениями
+=======
+    return redirect('my_listings')  # Перенаправляем пользователя на страницу с его объявлениями
+>>>>>>> 621bda8a80e27402bf9741047b8ec1cc22cc0556

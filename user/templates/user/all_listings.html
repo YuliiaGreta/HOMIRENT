@@ -54,6 +54,7 @@
 </form>
 <div id="itemList" class="listItem">
     {% for listing in listings %}
+<<<<<<< HEAD
         <div class="item">
             <div>
                 <b>title </b>{{listing.title}}<br>
@@ -91,3 +92,23 @@
 
 </body>
 </html>
+=======
+        <li>
+            <strong>{{ listing.title }}</strong><br>
+            {{ listing.description }}<br>
+            <strong>Location:</strong> {{ listing.location }}<br>
+            <strong>Price:</strong> {{ listing.price }}<br>
+            <strong>Rooms:</strong> {{ listing.rooms }}<br>
+            <strong>Type:</strong> {{ listing.property_type }}<br>
+            <strong>Created at:</strong> {{ listing.created_at }}<br>
+            <strong>Updated at:</strong> {{ listing.updated_at }}<br>
+            <strong>{% if listing.status %}Активно{% else %}Неактивно{% endif %}</strong> <!-- Отображение статуса -->
+        </li>
+
+    {% empty %}
+        <li>No listings found</li>
+    {% endfor %}
+</ul>
+
+
+>>>>>>> 621bda8a80e27402bf9741047b8ec1cc22cc0556
