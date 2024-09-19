@@ -1,15 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Create Booking</title>
+    <meta charset="UTF-8">  <!-- Указываю кодировку страницы как UTF-8 -->
+    <title>Create Booking</title>  <!-- Устанавливаю заголовок страницы "Create Booking" -->
 </head>
 <body>
-    <h1>Book {{ listing.title }}</h1>
+    <h1>Book {{ listing.title }}</h1>  <!-- Заголовок с названием объявления, которое пользователь собирается забронировать -->
+
+    <!-- Форма для бронирования, отправляющая данные на сервер методом POST -->
     <form method="POST">
-        {% csrf_token %}
+        {% csrf_token %}  <!-- Добавляю CSRF-токен для защиты формы -->
+
+        <!-- Показываю название объявления -->
         <b>Listings</b> {{ listing.title }}
+
+        <!-- Отображаю все поля формы для ввода пользователем -->
         {{ form.as_p }}
+
+        <!-- Кнопка для отправки формы -->
         <button type="submit">Book Now</button>
     </form>
 </body>

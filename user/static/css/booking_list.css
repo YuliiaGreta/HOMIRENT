@@ -1,0 +1,54 @@
+body {
+    background-image: url("/static/img/beige_background_gradient.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.back-btn{
+    margin-top: 10px;
+    width: 200px;
+    height: 30px;
+    border-radius: 15px;
+    font-size: 17px;
+    background-color: #dcbe8f;
+    border: none;
+    color: black;
+}
+.back-btn:hover{
+     background-color: #645743;
+    color: white;
+}
+.confirm-btn{
+    padding: 5px 10px;
+    width: 200px;
+    height: 30px;
+    font-size: 17px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 15px;
+    margin-bottom: 10px;
+}
+.cancel-btn{
+    padding: 5px 10px;
+    width: 200px;
+    height: 30px;
+    background-color: #f44336;
+    border: none;
+    cursor: pointer;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    color: white;
+    font-size: 17px;
+}
+.container-booking{
+    background-color: white;
+    width: 300px;
+    margin: 20px;
+    padding: 20px;
+}
+.main-container{
+    display: flex;
+    flex-wrap: wrap;
+}

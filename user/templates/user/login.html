@@ -5,7 +5,8 @@
     <title>Login</title>
     <link rel="stylesheet" href="{% static 'css/user/login.css' %}" type="text/css">
 </head>
-<body>
+<body style="background-image: url('{% static "img/Luxurious_Modern_House_Beige_White_Blue.jpg" %}'); background-size: cover">
+<img src="{% static 'img/HomiRent_Logo_House.jpg' %}" alt="Logo" class="Logo">
     <h2>Login</h2>
     <form method="post" class="formLogin">
         {% csrf_token %}

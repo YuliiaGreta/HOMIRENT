@@ -1,23 +1,40 @@
+{% load static %}
 <!DOCTYPE html>
-<h2>Оставить рейтинг для {{ listing.title }}</h2>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Оставить рейтинг</title>  <!-- Указываю заголовок страницы — "Оставить рейтинг" -->
+    <link rel="stylesheet" href="{% static 'css/listings/rate.css' %}">
+</head>
+<body>
 
+<h2>Оставить рейтинг для {{ listing.title }}</h2>  <!-- Заголовок страницы, который выводит название объявления -->
+
+<!-- Форма для отправки рейтинга и комментария -->
 <form method="post">
-    {% csrf_token %}
+    {% csrf_token %}  <!-- Включаю CSRF-токен для защиты формы -->
+
+    <!-- Радиокнопки для выбора рейтинга от 1 до 5 -->
     <label for="rating">Рейтинг:</label>
     <div class="rating">
-        <input type="radio" id="star1" name="rating" value="1"><label for="star1" title="1 stars">★</label>
-        <input type="radio" id="star2" name="rating" value="2"><label for="star2" title="2 stars">★</label>
-        <input type="radio" id="star3" name="rating" value="3"><label for="star3" title="3 stars">★</label>
-        <input type="radio" id="star4" name="rating" value="4"><label for="star4" title="4 stars">★</label>
-        <input type="radio" id="star5" name="rating" value="5"><label for="star5" title="5 star">★</label>
+        <input type="radio" id="star1" name="rating" value="1"><label for="star1" title="1 stars">★ 1</label>
+        <input type="radio" id="star2" name="rating" value="2"><label for="star2" title="2 stars">★ 2</label>
+        <input type="radio" id="star3" name="rating" value="3"><label for="star3" title="3 stars">★ 3</label>
+        <input type="radio" id="star4" name="rating" value="4"><label for="star4" title="4 stars">★ 4</label>
+        <input type="radio" id="star5" name="rating" value="5"><label for="star5" title="5 star">★ 5</label>
     </div>
 
+    <!-- Текстовое поле для комментария -->
     <label for="comment">Комментарий:</label>
-    <textarea name="comment" rows="4" cols="50"></textarea>
+    <textarea name="comment" rows="4" cols="50"></textarea>  <!-- Место для ввода отзыва, с возможностью писать на нескольких строках -->
 
-    <button type="submit">Отправить</button>
+    <button type="submit">Отправить</button>  <!-- Кнопка для отправки формы -->
 </form>
 
+<!-- Если есть сообщение об успешной отправке или ошибке, вывожу его -->
 {% if message %}
     <p>{{ message }}</p>
 {% endif %}
+
+</body>
+</html>

@@ -1,28 +1,31 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{% if form.instance.pk %}Edit Listing{% else %}Create Listing{% endif %}</title>
+    <title>{% if form.instance.pk %}Edit Listing{% else %}Create Listing{% endif %}</title>  <!-- Устанавливаю заголовок страницы, в зависимости от того, создается или редактируется объявление -->
+    <link rel="stylesheet" href="{% static 'css/listings/create_listing.css' %}">
 </head>
 <body>
-<h2>{% if form.instance.pk %}Edit Listing{% else %}Create Listing{% endif %}</h2>
+<h2>{% if form.instance.pk %}Edit Listing{% else %}Create Listing{% endif %}</h2>  <!-- Отображаю заголовок, указывая "Создать" или "Редактировать", в зависимости от состояния формы -->
 
 <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <p><strong>Владелец:</strong> {{ user.username }}</p>
+    {% csrf_token %}  <!-- Включаю CSRF-токен для безопасности формы -->
+    {{ form.as_p }}  <!-- Вывожу форму объявления с полями, оформленными в виде параграфов -->
+    <p><strong>Владелец:</strong> {{ user.username }}</p>  <!-- Показываю владельца объявления, основываясь на текущем пользователе -->
 
-    <!-- Добавляем возможность управления статусом объявления -->
-
+    <!-- Кнопка для отправки формы, которая меняет текст в зависимости от того, редактируется или создается объявление -->
     <button type="submit">
         {% if form.instance.pk %}
-            Update
+            Update  <!-- Если объявление уже существует, кнопка будет с надписью "Обновить" -->
         {% else %}
-            Create
+            Create  <!-- Если создается новое объявление, кнопка будет с надписью "Создать" -->
         {% endif %}
     </button>
 </form>
-<a href="{% url 'listings:my_listings' %}">
-    <button>Back</button></a>
+<div class="btns-conteiner">
+    <a href="{% url 'listings:my_listings' %}">
+    <button>Back</button></a>  <!-- Кнопка для возврата к списку объявлений -->
+</div>
 </body>
 </html>

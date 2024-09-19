@@ -1,0 +1,73 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-image: url('/static/listings/img/terrace.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-family: "Playfair Display", serif;
+    justify-content: center;
+    height: 100vh;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+}
+.formRegister{
+    background: #ffffff;
+    width: 450px;
+    padding: 21px;
+    display: flex;
+    border-radius: 20px;
+    flex-direction: column;
+}
+.formRegister p{
+    display: flex;
+    flex-direction: column;
+    font-weight: 500;
+    font-size: 15px;
+}
+.formRegister input, .formRegister select{
+    height: 25px;
+}
+.btnRegist{
+    height: 35px;
+    border-radius: 15px;
+    border: none;
+    background-color: #e592d6;
+    font-size: 18px;
+}
+.btnRegist:hover{
+    background-color: #9a3e8b;
+    color: white;
+}
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}

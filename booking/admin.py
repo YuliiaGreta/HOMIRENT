@@ -1,9 +1,7 @@
-from django.contrib import admin
+from django.contrib import admin  # Импортирую модуль admin из Django для регистрации моделей
 
-# Register your models here.
-
-from django.contrib import admin
+# Импортирую модель Booking для работы в административной панели
 from .models import Booking
 
-# Регистрируем модель бронирования в админке
+# Регистрирую модель бронирования в админке, чтобы можно было управлять бронированиями через панель администратора
 admin.site.register(Booking)

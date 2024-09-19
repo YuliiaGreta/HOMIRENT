@@ -1,12 +1,25 @@
 <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Список объявлений</title>
+</head>
+<body>
+
 <h2>Фильтровать объявления</h2>
+<!-- Форма для фильтрации объявлений. Здесь я использую {{ filter.form.as_p }} для отображения полей фильтра -->
 <form method="get">
-    {{ filter.form.as_p }}
-    <button type="submit">Применить фильтры</button>
+    {{ filter.form.as_p }}  <!-- Фильтры по цене, количеству комнат и другим параметрам, переданные в шаблон через контекст -->
+    <button type="submit">Применить фильтры</button>  <!-- Кнопка для применения выбранных фильтров -->
 </form>
 
 <ul>
-{% for listing in filter.qs %}
-    <li>{{ listing.title }} - {{ listing.price }} EUR - {{ listing.rooms }} комнат - {{ listing.property_type }}</li>
-{% endfor %}
+    <!-- Я перебираю отфильтрованные объявления и отображаю их -->
+    {% for listing in filter.qs %}
+        <!-- Каждое объявление выводится в виде строки с названием, ценой, количеством комнат и типом недвижимости -->
+        <li>{{ listing.title }} - {{ listing.price }} EUR - {{ listing.rooms }} комнат - {{ listing.property_type }}</li>
+    {% endfor %}
 </ul>
+
+</body>
+</html>

@@ -1,45 +1,26 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Мои объявления</title>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        table, th, td {
-            border: 1px solid black;
-        }
-        th, td {
-            padding: 10px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        button {
-            padding: 5px 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        button.delete {
-            background-color: #f44336;
-        }
-        button.toggle-status {
-            background-color: #FFA500;
-        }
-        button:hover {
-            opacity: 0.8;
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'css/listings/my_listings.css' %}">
 </head>
 <body>
+<a href="{% url 'user:homepage' %}">
+    <!-- Кнопка для возврата на домашнюю страницу -->
+    <button>Back</button>
+</a>
+<a href="{% url 'listings:create_listing' %}">
+    <!-- Кнопка для создания нового объявления -->
+    <button>Create New Booking</button>
+</a>
     <h1>Мои объявления</h1>
+
+    <!-- Я создаю таблицу для отображения всех объявлений пользователя -->
     <table>
         <tr>
+            <!-- Заголовки столбцов таблицы для отображения данных объявлений -->
             <th>Название</th>
             <th>Описание</th>
             <th>Местоположение</th>
@@ -52,37 +33,38 @@
             <th>Обновлено</th>
             <th>Редактировать</th>
             <th>Удалить</th>
-            <th>Изменить статус</th> <!-- Новый столбец для управления статусом -->
+            <th>Изменить статус</th> <!-- Я добавляю новый столбец для управления статусом объявления -->
         </tr>
         {% for listing in listings %}
+            <!-- Для каждого объявления создаю строку с его данными -->
             <tr>
-                <td>{{ listing.title }}</td>
-                <td>{{ listing.description }}</td>
-                <td>{{ listing.location }}</td>
-                <td>{{ listing.price }}</td>
-                <td>{{ listing.rooms }}</td>
-                <td>{{ listing.property_type }}</td>
-                <td>{% if listing.status %}Активно{% else %}Неактивно{% endif %}</td> <!-- Отображение статуса -->
-                <td>{{ listing.owner }}</td>
-                <td>{{ listing.created_at }}</td>
-                <td>{{ listing.updated_at }}</td>
+                <td>{{ listing.title }}</td> <!-- Название объявления -->
+                <td>{{ listing.description }}</td> <!-- Описание объявления -->
+                <td>{{ listing.location }}</td> <!-- Местоположение -->
+                <td>{{ listing.price }}</td> <!-- Цена -->
+                <td>{{ listing.rooms }}</td> <!-- Количество комнат -->
+                <td>{{ listing.property_type }}</td> <!-- Тип недвижимости -->
+                <!-- Отображаю статус объявления: Активно или Неактивно -->
+                <td>{% if listing.status %}Активно{% else %}Неактивно{% endif %}</td>
+                <td>{{ listing.owner }}</td> <!-- Владелец объявления -->
+                <td>{{ listing.created_at }}</td> <!-- Дата создания -->
+                <td>{{ listing.updated_at }}</td> <!-- Дата последнего обновления -->
                 <td>
+                    <!-- Кнопка для редактирования объявления -->
                     <button>
                         <a href="{% url 'listings:edit_listing' listing.pk %}" style="color: white; text-decoration: none;">Редактировать</a>
                     </button>
                 </td>
                 <td>
+                    <!-- Форма для удаления объявления с подтверждением -->
                     <form action="{% url 'listings:delete_listing' listing.pk %}" method="post" onsubmit="return confirm('Вы уверены, что хотите удалить это объявление?');">
                         {% csrf_token %}
                         <button type="submit" class="delete">Удалить</button>
                     </form>
                 </td>
                 <td>
-<<<<<<< HEAD
+                    <!-- Форма для изменения статуса объявления (Активно/Неактивно) -->
                     <form action="{% url 'listings:toggle_listing_status' listing.pk %}" method="post">
-=======
-                    <form action="{% url 'toggle_listing_status' listing.pk %}" method="post">
->>>>>>> 621bda8a80e27402bf9741047b8ec1cc22cc0556
                         {% csrf_token %}
                         <button type="submit" class="toggle-status">
                             {% if listing.status %}
@@ -92,9 +74,10 @@
                             {% endif %}
                         </button>
                     </form>
-                </td> <!-- Кнопка для переключения статуса -->
+                </td> <!-- Кнопка для переключения статуса объявления -->
             </tr>
         {% empty %}
+            <!-- Сообщение, если у пользователя нет объявлений -->
             <tr>
                 <td colspan="13">Нет объявлений.</td>
             </tr>

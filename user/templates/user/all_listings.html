@@ -4,111 +4,70 @@
 <head>
     <meta charset="UTF-8">
     <title>All Listings</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="{% static 'css/user/all_listings.css' %}">
 </head>
 <body>
 <a href="{% url 'user:homepage' %}">
     <button class="btn-back">Back</button></a>
     <h1>All Listings</h1>
- <!-- Форма для поиска -->
+
+    <!-- Форма для поиска -->
     <form action="{% url 'user:search' %}" method="get">
-        <input type="search" name="q" placeholder="Search ">
+        <input type="search" name="q" placeholder="Search">
         <button type="submit">Search</button>
-        <button><a href="{% url 'user:view_listings' %}">Сбросить поиск</a></button>
+        <a href="{% url 'user:view_listings' %}"><button type="button">Сбросить поиск</button></a>
+
     </form>
+
     <!-- Форма для фильтрации и сортировки -->
     <form method="GET" id="filterForm">
-    <!-- Фильтрация по цене -->
-    <input type="number" name="min_price" placeholder="Min Price" value="{{ request.GET.min_price }}">
-    <input type="number" name="max_price" placeholder="Max Price" value="{{ request.GET.max_price }}">
+        <input type="number" name="min_price" placeholder="Min Price" value="{{ request.GET.min_price }}">
+        <input type="number" name="max_price" placeholder="Max Price" value="{{ request.GET.max_price }}">
+        <input type="text" name="location" placeholder="Location" value="{{ request.GET.location }}">
+        <input type="number" name="rooms" placeholder="Min Rooms" value="{{ request.GET.rooms }}">
+        <select name="property_type">
+            <option value="">All Types</option>
+            <option value="Apartment" {% if request.GET.property_type == 'Apartment' %}selected{% endif %}>Apartment</option>
+            <option value="House" {% if request.GET.property_type == 'House' %}selected{% endif %}>House</option>
+            <option value="Studio" {% if request.GET.property_type == 'Studio' %}selected{% endif %}>Studio</option>
+        </select>
+        <select name="sort_by">
+            <option value="title" {% if request.GET.sort_by == 'title' %}selected{% endif %}>Sort by Title</option>
+            <option value="price" {% if request.GET.sort_by == 'price' %}selected{% endif %}>Sort by Price</option>
+            <option value="created_at" {% if request.GET.sort_by == 'created_at' %}selected{% endif %}>Sort by Date</option>
+        </select>
+        <select name="order">
+            <option value="asc" {% if request.GET.order == 'asc' %}selected{% endif %}>Ascending</option>
+            <option value="desc" {% if request.GET.order == 'desc' %}selected{% endif %}>Descending</option>
+        </select>
+        <button type="submit">Filter</button>
+    </form>
 
-    <!-- Фильтрация по местоположению -->
-    <input type="text" name="location" placeholder="Location" value="{{ request.GET.location }}">
-
-    <!-- Фильтрация по количеству комнат -->
-    <input type="number" name="rooms" placeholder="Min Rooms" value="{{ request.GET.rooms }}">
-
-    <!-- Фильтрация по типу жилья -->
-    <select name="property_type">
-        <option value="">All Types</option>
-        <option value="Apartment" {% if request.GET.property_type == 'Apartment' %}selected{% endif %}>Apartment</option>
-        <option value="House" {% if request.GET.property_type == 'House' %}selected{% endif %}>House</option>
-        <option value="Studio" {% if request.GET.property_type == 'Studio' %}selected{% endif %}>Studio</option>
-    </select>
-
-    <!-- Сортировка -->
-    <select name="sort_by">
-        <option value="title" {% if request.GET.sort_by == 'title' %}selected{% endif %}>Sort by Title</option>
-        <option value="price" {% if request.GET.sort_by == 'price' %}selected{% endif %}>Sort by Price</option>
-        <option value="created_at" {% if request.GET.sort_by == 'created_at' %}selected{% endif %}>Sort by Date</option>
-    </select>
-
-    <!-- Порядок сортировки -->
-    <select name="order">
-        <option value="asc" {% if request.GET.order == 'asc' %}selected{% endif %}>Ascending</option>
-        <option value="desc" {% if request.GET.order == 'desc' %}selected{% endif %}>Descending</option>
-    </select>
-
-    <button type="submit">Filter</button>
-</form>
-<div id="itemList" class="listItem">
+    <div id="itemList" class="listItem">
     {% for listing in listings %}
-<<<<<<< HEAD
         <div class="item">
             <div>
-                <b>title </b>{{listing.title}}<br>
-                <b>description </b>{{ listing.description}}<br>
-                <b>location </b>{{ listing.location}}<br>
-                <b>status</b>
+                <b>Title: </b>{{ listing.title }}<br>
+                <b>Description: </b>{{ listing.description }}<br>
+                <b>Location: </b>{{ listing.location }}<br>
+                <b>Status: </b>
                 {% if listing.status %}
                     Active
                 {% else %}
                     No active
-                {% endif %}
+                {% endif %} <br>
+            <b>Owner:</b> {{ listing.owner }}
             </div>
             <div class="buttons">
-                <a href="{% url 'booking:create_booking' listing.id %}" ><button>Booking</button></a>
-                <a href="{% url 'listings:listing_detail' listing.id %}" ><button>Detail</button></a>
+                <a href="{% url 'booking:create_booking' listing.id %}"><button>Book</button></a>
+                <a href="{% url 'listings:listing_detail' listing.id %}"><button>Details</button></a>
             </div>
         </div>
-
-       <!-- <b>price </b>{{ listing.price}}<br>
-        <b>rooms </b>{{ listing.rooms}}<br>
-        <b>property_type </b>{{ listing.property_type}}<br>
-        <b>status </b>{{ listing.status}}<br>
-        <b>owner </b>{{ listing.owner}}<br>
-        <b>created_at </b>{{ listing.created_at}}<br>
-        <b>updated_at </b>{{ listing.updated_at}}<br>
-        -->
         <br>
     {% empty %}
-    <p>Listings not found
-
-    </p>
+        <p>No listings found.</p>
     {% endfor %}
 </div>
 
-
 </body>
 </html>
-=======
-        <li>
-            <strong>{{ listing.title }}</strong><br>
-            {{ listing.description }}<br>
-            <strong>Location:</strong> {{ listing.location }}<br>
-            <strong>Price:</strong> {{ listing.price }}<br>
-            <strong>Rooms:</strong> {{ listing.rooms }}<br>
-            <strong>Type:</strong> {{ listing.property_type }}<br>
-            <strong>Created at:</strong> {{ listing.created_at }}<br>
-            <strong>Updated at:</strong> {{ listing.updated_at }}<br>
-            <strong>{% if listing.status %}Активно{% else %}Неактивно{% endif %}</strong> <!-- Отображение статуса -->
-        </li>
-
-    {% empty %}
-        <li>No listings found</li>
-    {% endfor %}
-</ul>
-
-
->>>>>>> 621bda8a80e27402bf9741047b8ec1cc22cc0556

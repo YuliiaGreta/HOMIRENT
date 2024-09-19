@@ -1,9 +1,28 @@
 <!DOCTYPE html>
-<h1>Подтверждение бронирования</h1>
-<p>Подтвердить бронирование для {{ booking.listing.title }} от пользователя {{ booking.user.username }} на даты {{ booking.start_date }} - {{ booking.end_date }}?</p>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">  <!-- Указываю кодировку страницы UTF-8 для поддержки различных языков -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  <!-- Устанавливаю мета-тег для адаптивного дизайна -->
+    <title>Подтверждение бронирования</title>  <!-- Заголовок страницы "Подтверждение бронирования" -->
+</head>
+<body>
+    <h1>Подтверждение бронирования</h1>  <!-- Заголовок страницы для подтверждения бронирования -->
 
-<form method="post">
-    {% csrf_token %}
-    <button type="submit">Подтвердить</button>
-    <a href="{% url 'notifications_list' %}">Назад</a>
-</form>
+    <!-- Сообщение с деталями бронирования -->
+    <p>Подтвердить бронирование для {{ booking.listing.title }} от пользователя {{ booking.user.username }} на даты {{ booking.start_date }} - {{ booking.end_date }}?</p>
+
+    <!-- Форма для подтверждения или отклонения бронирования -->
+    <form method="post" action="{% url 'booking:confirm_booking' booking.id %}">
+        {% csrf_token %}  <!-- Добавляю CSRF-токен для защиты формы -->
+
+        <!-- Кнопка для подтверждения бронирования -->
+        <button type="submit" name="action" value="confirm">Подтвердить</button>
+
+        <!-- Кнопка для отклонения бронирования -->
+        <button type="submit" name="action" value="reject">Отклонить</button>
+
+        <!-- Ссылка для возврата к списку бронирований арендодателя -->
+        <a href="{% url 'booking:landlord_booking_list' %}">Назад</a>
+    </form>
+</body>
+</html>

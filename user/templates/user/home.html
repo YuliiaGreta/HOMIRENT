@@ -19,7 +19,8 @@
         </a>
     </div>
     <p class="textWelcome">Welcome to Rental Site! </p>
-    <div class="btnContainer">
+    {% if request.user.role == 'tenant' %}
+        <div class="btnContainer">
         <a href="{% url 'user:view_listings' %}">
         <button class="buttonListing">All Listings</button>
         </a><br><br>
@@ -27,5 +28,16 @@
             <button class="buttonListing">View My Bookings</button>
         </a>
     </div>
+
+    {% else %}
+        <div class="btnContainer">
+        <a href="{% url 'listings:my_listings' %}">
+        <button class="buttonListing">My Listings</button>
+        </a><br><br>
+        <a href="{% url 'booking:booking_list' %}">
+            <button class="buttonListing">View Bookings</button>
+        </a>
+    </div>
+    {% endif %}
 </body>
 </html>

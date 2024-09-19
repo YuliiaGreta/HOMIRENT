@@ -1,0 +1,45 @@
+
+body{
+    background-color: bisque;
+}
+/* Я создаю таблицу с границами, которая будет занимать всю ширину страницы */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        /* Добавляю границы для таблицы, строк заголовков и ячеек */
+        table, th, td {
+            border: 1px solid black;
+        }
+        /* Устанавливаю отступы для заголовков и ячеек таблицы */
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        /* Делаю фон заголовков таблицы светло-серым */
+        th {
+            background-color: #f2f2f2;
+        }
+        td{
+            background-color: white;
+        }
+        /* Создаю стили для кнопок: основной фон — зеленый, текст — белый */
+        button {
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        /* Делаю красной кнопку удаления */
+        button.delete {
+            background-color: #f44336;
+        }
+        /* Оранжевый цвет для кнопки изменения статуса */
+        button.toggle-status {
+            background-color: #FFA500;
+        }
+        /* При наведении на кнопки добавляю небольшую анимацию с уменьшением прозрачности */
+        button:hover {
+            opacity: 0.8;
+        }

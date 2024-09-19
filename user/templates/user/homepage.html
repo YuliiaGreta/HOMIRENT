@@ -6,16 +6,12 @@
     <title>User Homepage</title>
 </head>
 <body>
-    <h1>Welcome, {{ user.username }}!</h1>
-    <p>Email: {{ user.email }}</p>
-
-    <h2>Your Bookings</h2>
-    <ul>
-        {% for booking in bookings %}
-            <li>{{ booking.listing.title }} ({{ booking.start_date }} - {{ booking.end_date }})</li>
-        {% empty %}
-            <p>You have no bookings.</p>
-        {% endfor %}
-    </ul>
+    <h1>Welcome to Rental Site!</h1>
+    <a href="{% url 'listings:my_listings' %}">
+        <button>My Listings</button>
+    </a>
+    <a href="{% url 'booking:landlord_booking_list' %}">
+    <button class="btn-bookings">View Bookings</button>
+    </a>
 </body>
-
+</html>

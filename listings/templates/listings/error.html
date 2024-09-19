@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ошибка</title>
+    <meta charset="UTF-8">  <!-- Указываю кодировку страницы как UTF-8 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  <!-- Устанавливаю мета-тег для адаптации страницы на мобильных устройствах -->
+    <title>Ошибка</title>  <!-- Заголовок страницы — "Ошибка" -->
 </head>
 <body>
-    <h1>Ошибка</h1>
+    <h1>Ошибка</h1>  <!-- Заголовок страницы для отображения ошибки -->
+
+    <!-- Вывожу сообщение об ошибке, которое передано в шаблон -->
     <p>{{ message }}</p>
-    <a href="{% url 'home' %}">Вернуться на главную</a>
+
+    <!-- Ссылка для возврата к списку бронирований -->
+    <a href="{% url 'booking:booking_list' %}">Back</a>
 </body>
 </html>

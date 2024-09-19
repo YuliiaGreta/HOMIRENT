@@ -2,28 +2,29 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Все объявления</title>
+    <title>Все объявления</title>  <!-- Устанавливаю заголовок страницы как "Все объявления" -->
 </head>
 <body>
-    <h1>Все объявления</h1>
+    <h1>Все объявления</h1>  <!-- Заголовок страницы -->
     <ul>
+        <!-- Перебираю все объявления и вывожу информацию о каждом из них -->
         {% for listing in listings %}
         <li>
-            <h2>{{ listing.title }}</h2>
+            <h2>{{ listing.title }}</h2>  <!-- Заголовок объявления -->
             <ul>
-                <li><b>Описание:</b> {{ listing.description }}</li>
-                <li><b>Местоположение:</b> {{ listing.location }}</li>
-                <li><b>Цена:</b> {{ listing.price }}</li>
-                <li><b>Комнаты:</b> {{ listing.rooms }}</li>
-                <li><b>Владелец:</b> {{ listing.owner.username }}</li>
-                <li><b>Тип недвижимости:</b> {{ listing.property_type }}</li>
-                <li><b>Создано:</b> {{ listing.created_at }}</li>
-                <li><b>Обновлено:</b> {{ listing.updated_at }}</li>
-                <li><b>Статус:</b> {% if listing.status %}Активно{% else %}Неактивно{% endif %}</li>
+                <li><b>Описание:</b> {{ listing.description }}</li>  <!-- Описание объявления -->
+                <li><b>Местоположение:</b> {{ listing.location }}</li>  <!-- Местоположение (город) объявления -->
+                <li><b>Цена:</b> {{ listing.price }}</li>  <!-- Цена объекта -->
+                <li><b>Комнаты:</b> {{ listing.rooms }}</li>  <!-- Количество комнат в объекте -->
+                <li><b>Владелец:</b> {{ listing.owner.username }}</li>  <!-- Владелец объявления -->
+                <li><b>Тип недвижимости:</b> {{ listing.property_type }}</li>  <!-- Тип недвижимости, например, квартира или дом -->
+                <li><b>Создано:</b> {{ listing.created_at }}</li>  <!-- Дата создания объявления -->
+                <li><b>Обновлено:</b> {{ listing.updated_at }}</li>  <!-- Дата последнего обновления объявления -->
+                <li><b>Статус:</b> {% if listing.status %}Активно{% else %}Неактивно{% endif %}</li>  <!-- Отображаю статус объекта: Активно или Нет -->
             </ul>
         </li>
-        <button>Редактировать</button>
-        <button>Удалить</button>
+        <button>Редактировать</button>  <!-- Кнопка для редактирования объявления -->
+        <button>Удалить</button>  <!-- Кнопка для удаления объявления -->
         {% endfor %}
     </ul>
 </body>

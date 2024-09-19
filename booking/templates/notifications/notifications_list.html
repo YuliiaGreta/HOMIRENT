@@ -1,12 +1,23 @@
 <!DOCTYPE html>
-<h1>Ваши уведомления</h1>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Уведомления</title>  <!-- Заголовок страницы — "Уведомления" -->
+</head>
+<body>
+    <h1>Ваши уведомления</h1>  <!-- Заголовок для страницы с уведомлениями -->
 
-<ul>
-    {% for notification in notifications %}
-    <li>
-        {{ notification.message }} | <a href="{% url 'confirm_booking' notification.listing.id %}">Подтвердить бронирование</a>
-    </li>
-    {% empty %}
-    <li>У вас пока нет новых уведомлений.</li>
-    {% endfor %}
-</ul>
+    <ul>
+        <!-- Перебираю все уведомления для пользователя -->
+        {% for notification in notifications %}
+        <li>
+            <!-- Вывожу текст уведомления и добавляю ссылку для подтверждения бронирования -->
+            {{ notification.message }} | <a href="{% url 'confirm_booking' notification.listing.id %}">Подтвердить бронирование</a>
+        </li>
+        {% empty %}
+        <!-- Если уведомлений нет, показываю сообщение -->
+        <li>У вас пока нет новых уведомлений.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
